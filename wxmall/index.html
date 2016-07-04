@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="apple-mobile-web-app-capable" content="yes"/> 
+	<meta name="apple-touch-fullscreen" content="yes"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta name="ML-Config" content="fullscreen=yes,preventMove=no"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0;">
+	<meta http-equiv="Expires" content="0">
+	<link rel="stylesheet" type="text/css" href="styles/style.css">
+	<title>自拍神器</title>
+	<script type="text/javascript" src="scripts/jquery-1.11.0.js" ></script>
+	<style>
+		.error{border-color:red!important;}
+	</style>
+</head>
+<body>
+
+	<div class="product">
+		<img src="images/demo.jpg" alt="">
+		<img src="images/demo1.jpg" alt="">
+		<img src="images/demo2.jpg" alt="">
+	</div>
+
+	<form class="select" action="">
+		<h2>立即购买</h2>
+		<ul>
+			<li>
+				<div class="img"><img src="images/product1.jpg"></div>
+				<h4>自拍神器蓝色</h4>
+				<p>蓝色闪亮</p>
+				<span><em class="price">18.47</em> 元/个</span>
+				<cite class="count">
+					<button type="button" class="minus">-</button>
+					<input type="text" name="11111" class="prdNum" value="0">
+					<button type="button" class="plus">+</button>
+				</cite>
+			</li>
+			<li>
+				<div class="img"><img src="images/product2.jpg"></div>
+				<h4>自拍神器粉色</h4>
+				<p>蓝色闪亮</p>
+				<span><em class="price">18.47</em> 元/个</span>
+				<cite class="count">
+					<button type="button" class="minus">-</button>
+					<input type="text" name="222" class="prdNum" value="0">
+					<button type="button" class="plus">+</button>
+				</cite>
+			</li>
+		</ul>
+		<h6>总价：<em class="total_price">0</em>元，共<b class="total_number">0</b>件</h6>
+		
+		<div class="enter">
+			<label>
+				<em>☺</em>
+				<span><input type="text" name="name" id="name" placeholder="联系人"></span>
+			</label>
+			<label>
+				<em>✆</em>
+				<span><input type="text" name="phone" id="phone" placeholder="联系电话"></span>
+			</label>
+			<label style="width: 100%;">
+				<em>✉</em>
+				<span><input type="text" name="address" id="address" placeholder="联系地址"></span>
+			</label>
+
+			<cite><button id="submit" >微信安全支付</button></cite>
+		</div>
+	
+	</div>
+
+	<div class="footer">©2016 离岸科技（深圳）有限责任公司</div>
+
+<script type="text/javascript">	
+	$('.minus').on('click',function(e){
+		var numEit = $(this).siblings('input').val();
+		if(numEit==0){
+			return false;
+		} else{
+			$(this).siblings('input').val(parseInt(numEit)-1);
+			total();
+		}
+	});
+	
+	$('.plus').on('click',function(e){
+		var numEit = $(this).siblings('input').val();
+		$(this).siblings('input').val(parseInt(numEit)+1);
+		total();
+	});
+    
+    var total = function(){
+   		var liLeng = $('ul li');
+   		var total_price = 0;
+   		var total_number = 0;
+   	
+   		liLeng.each(function(){
+   			var price = $(this).find('.price').text();
+   			var prdNum = $(this).find('.prdNum').val();
+   			total_price += parseFloat(parseInt(parseFloat(price*prdNum)*100)/100);   //总金额
+   			total_number += parseFloat(prdNum);  		
+   		});
+   	
+   		$('.total_price').text(total_price)
+   		$('.total_number').text(total_number)  	
+   };
+    
+    var config ={
+    	name:"请输入姓名",
+   		phone:"请输入手机号码",
+   		address:"请输入地址"
+    }
+   
+    var isName = function(){
+    	var nameInp = $("#name").val()
+		if(nameInp){
+			return true;
+	   	} else{
+	   		$("#name").val(config.name);
+			$("#name").addClass("error");
+	   		return false;	
+   		}
+    };
+    $("#name").blur(function(){
+    	return isName();
+    });
+   
+   $("#name").focus(function(){
+    	if($("#name").hasClass("error")){
+    		$(this).val('');
+			$(this).removeClass("error");
+			return false;
+		}else{
+			return true;
+		};
+    });
+  
+	var isPhone = function(){
+		var phnoeInp = $("#phone").val();
+		//判断值长度=11 且 格式正确
+		if(phnoeInp.length == 11 && /^1[3|4|5|8][0-9]\d{4,8}$/.test(phnoeInp)){
+			return true;
+		}else{
+			$("#phone").val(config.phone);
+			$("#phone").addClass("error");
+            return false;
+		};
+	};
+    
+    $("#phone").blur(function(){
+    	return isPhone();
+    });
+    
+    $("#phone").focus(function(){
+    	if($("#phone").hasClass("error")){
+			$(this).val('');
+			$(this).removeClass("error");
+            return false;
+		}else{
+            return true;
+		}; 	
+    });
+     
+	var isAddress = function(){
+		var addressInp = $("#address").val();
+		if(addressInp){
+			return true;			
+        } else{
+   			$("#address").val(config.address);
+			$("#address").addClass("error");
+   			return false;
+   		}
+	};
+	$("#address").blur(function(){
+		return isAddress();
+	});
+	$("#address").focus(function(){
+		if($("#address").hasClass("error")){
+    		$(this).val('');
+			$(this).removeClass("error");
+			return false;
+		}else{
+			return true;
+		};
+	});
+	
+	$("#submit").click(function(){
+		var name = isName();
+		var phone = isPhone();
+		var address = isAddress();
+		
+		if(name && phone && address){
+			return true;	
+		}else{
+			return false;
+		}
+	});
+	
+</script>
+
+
+</body>
+</html>
